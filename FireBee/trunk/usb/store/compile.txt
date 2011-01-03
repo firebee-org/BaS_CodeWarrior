@@ -1,0 +1,6 @@
+I have used gcc 4.4.3 native version and gcc 4.4.3 cross-compiler version to
+compile these sources.
+There are 4 targets "make ethernat", "make netusbee", "make aranym", "make ohci-pci".
+If you use cross-compiler add "CROSS=yes" to the commands above.
+Before compiling "ohci-pci" target you must "make clean" if you have been compiling the other targets before.
+"make all" compiles the 4 targets.

@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<?codewarrior exportversion="1.0" ideversion="5.9.0" success="y" ?>
+
+<!DOCTYPE MWIDEWORKSPACE [
+<!ELEMENT MWIDEWORKSPACE (WINDOW*, COMWINDOW*)>
+<!ELEMENT WINDOW (SESSION, EDOCTYPE, PATH, FRAMELOC, FRAMESIZE, DOCKINFO)>
+<!ELEMENT COMWINDOW (SESSION, CLSID, OWNERPROJECT, DATA, FRAMELOC, FRAMESIZE, DOCKINFO)>
+<!ELEMENT SESSION (#PCDATA)>
+<!ELEMENT EDOCTYPE (#PCDATA)>
+<!ELEMENT DEFAULT (#PCDATA)>
+<!ELEMENT MAXIMIZED (#PCDATA)>
+<!ELEMENT PATH (#PCDATA)>
+<!ATTLIST PATH USERELATIVEPATHS (true | false) "true">
+<!ELEMENT FRAMELOC (X, Y)>
+<!ELEMENT X (#PCDATA)>
+<!ELEMENT Y (#PCDATA)>
+<!ELEMENT FRAMESIZE (W, H)>
+<!ELEMENT W (#PCDATA)>
+<!ELEMENT H (#PCDATA)>
+<!ELEMENT DOCKINFO (STATUS, ROW, COLUMN, DOCKBARID, PCTWIDTH, HGT, GROUPID)>
+<!ELEMENT STATUS (#PCDATA)>
+<!ELEMENT ROW (#PCDATA)>
+<!ELEMENT COLUMN (#PCDATA)>
+<!ELEMENT DOCKBARID (#PCDATA)>
+<!ELEMENT PCTWIDTH (#PCDATA)>
+<!ELEMENT HGT (#PCDATA)>
+<!ELEMENT GROUPID (GIDHIGHPART, GIDLOWPART)>
+<!ELEMENT GIDHIGHPART (#PCDATA)>
+<!ELEMENT GIDLOWPART (#PCDATA)>
+<!ELEMENT CLSID (#PCDATA)>
+<!ELEMENT OWNERPROJECT (#PCDATA)>
+<!ATTLIST OWNERPROJECT USERELATIVEPATHS (true | false) "true">
+<!ELEMENT DATA (#PCDATA)>
+<!ATTLIST DATA BINARYFORMAT (true | false) "true">
+]>
+
+<MWIDEWORKSPACE>
+    <WINDOW>
+        <SESSION>-1</SESSION>
+        <EDOCTYPE>0</EDOCTYPE>
+        <DEFAULT>true</DEFAULT>
+        <PATH USERELATIVEPATHS = "true">firebeeV1\firebeeV1.mcp</PATH>
+        <FRAMELOC>
+            <X>938</X>
+            <Y>306</Y>
+        </FRAMELOC>
+        <FRAMESIZE>
+            <W>392</W>
+            <H>338</H>
+        </FRAMESIZE>
+        <DOCKINFO>
+            <STATUS>1</STATUS>
+            <ROW>0</ROW>
+            <COLUMN>0</COLUMN>
+            <DOCKBARID>59420</DOCKBARID>
+            <PCTWIDTH>1.000000</PCTWIDTH>
+            <HGT>378</HGT>
+            <GROUPID>
+                <GIDHIGHPART>0</GIDHIGHPART>
+                <GIDLOWPART>0</GIDLOWPART>
+            </GROUPID>
+        </DOCKINFO>
+    </WINDOW>
+    <WINDOW>
+        <SESSION>-1</SESSION>
+        <EDOCTYPE>1</EDOCTYPE>
+        <PATH USERELATIVEPATHS = "true">firebeeV1\sources\exceptions.s</PATH>
+        <FRAMELOC>
+            <X>8</X>
+            <Y>34</Y>
+        </FRAMELOC>
+        <FRAMESIZE>
+            <W>549</W>
+            <H>895</H>
+        </FRAMESIZE>
+        <DOCKINFO>
+            <STATUS>0</STATUS>
+            <ROW></ROW>
+            <COLUMN></COLUMN>
+            <DOCKBARID></DOCKBARID>
+            <PCTWIDTH></PCTWIDTH>
+            <HGT></HGT>
+            <GROUPID>
+                <GIDHIGHPART></GIDHIGHPART>
+                <GIDLOWPART></GIDLOWPART>
+            </GROUPID>
+        </DOCKINFO>
+    </WINDOW>
+    <WINDOW>
+        <SESSION>1073741824</SESSION>
+        <EDOCTYPE>35</EDOCTYPE>
+        <FRAMELOC>
+            <X>60</X>
+            <Y>205</Y>
+        </FRAMELOC>
+        <FRAMESIZE>
+            <W>582</W>
+            <H>392</H>
+        </FRAMESIZE>
+        <DOCKINFO>
+            <STATUS>0</STATUS>
+            <ROW></ROW>
+            <COLUMN></COLUMN>
+            <DOCKBARID></DOCKBARID>
+            <PCTWIDTH></PCTWIDTH>
+            <HGT></HGT>
+            <GROUPID>
+                <GIDHIGHPART></GIDHIGHPART>
+                <GIDLOWPART></GIDLOWPART>
+            </GROUPID>
+        </DOCKINFO>
+        <DEBUGCONTEXT>GlobalSession, cpu68K, osCWDS</DEBUGCONTEXT>
+        <DEBUGTARGETNAME>C:\FireBee\codewarrior\firebeeV1\bin\DDRAM.elf</DEBUGTARGETNAME>
+            <MEMORYWININDEX>2</MEMORYWININDEX>
+            <MEMORYWINSETTINGS EXPRSTRING = "0xf0000600" SPACEINDEX = "1" VIEWINDEX = "1" WORDSIZE = "1" SNAP16 = "0" SWAPENDIAN = "0" ASCIISHOWN = "1"/>
+    </WINDOW>
+    <WINDOW>
+        <SESSION>1073741824</SESSION>
+        <EDOCTYPE>35</EDOCTYPE>
+        <FRAMELOC>
+            <X>1586</X>
+            <Y>31</Y>
+        </FRAMELOC>
+        <FRAMESIZE>
+            <W>484</W>
+            <H>907</H>
+        </FRAMESIZE>
+        <DOCKINFO>
+            <STATUS>0</STATUS>
+            <ROW></ROW>
+            <COLUMN></COLUMN>
+            <DOCKBARID></DOCKBARID>
+            <PCTWIDTH></PCTWIDTH>
+            <HGT></HGT>
+            <GROUPID>
+                <GIDHIGHPART></GIDHIGHPART>
+                <GIDLOWPART></GIDLOWPART>
+            </GROUPID>
+        </DOCKINFO>
+        <DEBUGCONTEXT>GlobalSession, cpu68K, osCWDS</DEBUGCONTEXT>
+        <DEBUGTARGETNAME>C:\firebee\codewarrior\firebeeV1\bin\DDRAM.elf</DEBUGTARGETNAME>
+            <MEMORYWININDEX>4</MEMORYWININDEX>
+            <MEMORYWINSETTINGS EXPRSTRING = "0x1009626" SPACEINDEX = "1" VIEWINDEX = "4" WORDSIZE = "2" SNAP16 = "0" SWAPENDIAN = "0" ASCIISHOWN = "1"/>
+    </WINDOW>
+    <WINDOW>
+        <SESSION>1073741824</SESSION>
+        <EDOCTYPE>35</EDOCTYPE>
+        <FRAMELOC>
+            <X>1185</X>
+            <Y>39</Y>
+        </FRAMELOC>
+        <FRAMESIZE>
+            <W>481</W>
+            <H>225</H>
+        </FRAMESIZE>
+        <DOCKINFO>
+            <STATUS>0</STATUS>
+            <ROW></ROW>
+            <COLUMN></COLUMN>
+            <DOCKBARID></DOCKBARID>
+            <PCTWIDTH></PCTWIDTH>
+            <HGT></HGT>
+            <GROUPID>
+                <GIDHIGHPART></GIDHIGHPART>
+                <GIDLOWPART></GIDLOWPART>
+            </GROUPID>
+        </DOCKINFO>
+        <DEBUGCONTEXT>GlobalSession, cpu68K, osCWDS</DEBUGCONTEXT>
+        <DEBUGTARGETNAME>C:\firebee\codewarrior\firebeeV1\bin\DDRAM.elf</DEBUGTARGETNAME>
+            <MEMORYWININDEX>5</MEMORYWININDEX>
+            <MEMORYWINSETTINGS EXPRSTRING = "0xF" SPACEINDEX = "1" VIEWINDEX = "1" WORDSIZE = "3" SNAP16 = "0" SWAPENDIAN = "0" ASCIISHOWN = "1"/>
+    </WINDOW>
+    <WINDOW>
+        <SESSION>1073741824</SESSION>
+        <EDOCTYPE>35</EDOCTYPE>
+        <FRAMELOC>
+            <X>1100</X>
+            <Y>691</Y>
+        </FRAMELOC>
+        <FRAMESIZE>
+            <W>481</W>
+            <H>225</H>
+        </FRAMESIZE>
+        <DOCKINFO>
+            <STATUS>0</STATUS>
+            <ROW></ROW>
+            <COLUMN></COLUMN>
+            <DOCKBARID></DOCKBARID>
+            <PCTWIDTH></PCTWIDTH>
+            <HGT></HGT>
+            <GROUPID>
+                <GIDHIGHPART></GIDHIGHPART>
+                <GIDLOWPART></GIDLOWPART>
+            </GROUPID>
+        </DOCKINFO>
+        <DEBUGCONTEXT>GlobalSession, cpu68K, osCWDS</DEBUGCONTEXT>
+        <DEBUGTARGETNAME>C:\firebee\codewarrior\firebeeV1\bin\DDRAM.elf</DEBUGTARGETNAME>
+            <MEMORYWININDEX>3</MEMORYWININDEX>
+            <MEMORYWINSETTINGS EXPRSTRING = "0x010077e2" SPACEINDEX = "1" VIEWINDEX = "1" WORDSIZE = "3" SNAP16 = "0" SWAPENDIAN = "0" ASCIISHOWN = "1"/>
+    </WINDOW>
+    <WINDOW>
+        <SESSION>1073741824</SESSION>
+        <EDOCTYPE>35</EDOCTYPE>
+        <FRAMELOC>
+            <X>645</X>
+            <Y>600</Y>
+        </FRAMELOC>
+        <FRAMESIZE>
+            <W>481</W>
+            <H>225</H>
+        </FRAMESIZE>
+        <DOCKINFO>
+            <STATUS>0</STATUS>
+            <ROW></ROW>
+            <COLUMN></COLUMN>
+            <DOCKBARID></DOCKBARID>
+            <PCTWIDTH></PCTWIDTH>
+            <HGT></HGT>
+            <GROUPID>
+                <GIDHIGHPART></GIDHIGHPART>
+                <GIDLOWPART></GIDLOWPART>
+            </GROUPID>
+        </DOCKINFO>
+        <DEBUGCONTEXT>GlobalSession, cpu68K, osCWDS</DEBUGCONTEXT>
+        <DEBUGTARGETNAME>C:\FireBee\codewarrior\firebeeV1\bin\DDRAM.elf</DEBUGTARGETNAME>
+            <MEMORYWININDEX>1</MEMORYWININDEX>
+            <MEMORYWINSETTINGS EXPRSTRING = "0xfffffa" SPACEINDEX = "1" VIEWINDEX = "1" WORDSIZE = "1" SNAP16 = "0" SWAPENDIAN = "0" ASCIISHOWN = "1"/>
+    </WINDOW>
+    <WINDOW>
+        <SESSION>-2147483648</SESSION>
+        <EDOCTYPE>24</EDOCTYPE>
+        <FRAMELOC>
+            <X>13</X>
+            <Y>33</Y>
+        </FRAMELOC>
+        <FRAMESIZE>
+            <W>591</W>
+            <H>742</H>
+        </FRAMESIZE>
+        <DOCKINFO>
+            <STATUS>0</STATUS>
+            <ROW></ROW>
+            <COLUMN></COLUMN>
+            <DOCKBARID></DOCKBARID>
+            <PCTWIDTH></PCTWIDTH>
+            <HGT></HGT>
+            <GROUPID>
+                <GIDHIGHPART></GIDHIGHPART>
+                <GIDLOWPART></GIDLOWPART>
+            </GROUPID>
+        </DOCKINFO>
+    </WINDOW>
+    <WINDOW>
+        <SESSION>-2147483648</SESSION>
+        <EDOCTYPE>28</EDOCTYPE>
+        <FRAMELOC>
+            <X>652</X>
+            <Y>33</Y>
+        </FRAMELOC>
+        <FRAMESIZE>
+            <W>518</W>
+            <H>519</H>
+        </FRAMESIZE>
+        <DOCKINFO>
+            <STATUS>0</STATUS>
+            <ROW></ROW>
+            <COLUMN></COLUMN>
+            <DOCKBARID></DOCKBARID>
+            <PCTWIDTH></PCTWIDTH>
+            <HGT></HGT>
+            <GROUPID>
+                <GIDHIGHPART></GIDHIGHPART>
+                <GIDLOWPART></GIDLOWPART>
+            </GROUPID>
+        </DOCKINFO>
+        <DEBUGCONTEXT>GlobalSession, cpu68K, osCWDS</DEBUGCONTEXT>
+        <DEBUGTARGETNAME>C:\FireBee\codewarrior\firebeeV1\bin\DDRAM.elf</DEBUGTARGETNAME>
+            <REGISTERWINDOW><WINDOWINDEX>0</WINDOWINDEX>
+            <DIVIDERPOS>373</DIVIDERPOS>
+            <REGDISCLOSE NAME = "" TYPE = "334368068" DISCLOSED = "0">
+                <REGDISCLOSE NAME = "PEMICRO_USB" TYPE = "3" DISCLOSED = "1">
+                    <REGDISCLOSE NAME = "DDRAM.elf" TYPE = "4" DISCLOSED = "1">
+                        <REGDISCLOSE NAME = "Thread 0x0" TYPE = "5" DISCLOSED = "1">
+                            <REGDISCLOSE NAME = "General Purpose Registers" TYPE = "1" DISCLOSED = "1">
+                            </REGDISCLOSE>
+                            <REGDISCLOSE NAME = "FPU Registers" TYPE = "1" DISCLOSED = "0">
+                            </REGDISCLOSE>
+                            <REGDISCLOSE NAME = "EMAC Registers" TYPE = "1" DISCLOSED = "0">
+                            </REGDISCLOSE>
+                        </REGDISCLOSE>
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "Supervisor Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "Memory Management Unit Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "System Integration Unit Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "SDRAM Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "XL Bus Arbiter Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "Clock Module Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "Chip Select Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "Interrupt Controller Module Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "GPT Module Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "GPT Module Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "GPT Module Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "GPT Module Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "SLT0 Module Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "SLT1 Module Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "General Purpose I/O Port FBCTL Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "General Purpose I/O Port FBCS Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "General Purpose I/O Port DMA Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "General Purpose I/O Port FEC0H Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "General Purpose I/O Port FEC0L Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "General Purpose I/O Port FEC1H Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "General Purpose I/O Port FEC1L Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "General Purpose I/O Port FECI2C Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "General Purpose I/O Port PCIBG Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "General Purpose I/O Port PCIBR Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "General Purpose I/O Port PSC3PSC2 Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "General Purpose I/O Port PSC1PSC0 Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "General Purpose I/O Port DSPI Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "Common GPIO Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "PCI Bus Controller Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "PCI Bus Arbiter Module Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "Edge Port Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "Comm Timer Module Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "Multichannel DMA Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "Programmable Serial Controller 0 Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "Programmable Serial Controller 1 Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "Programmable Serial Controller 2 Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "Programmable Serial Controller 3 Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "DMA Serial Peripheral Interface Registers" TYPE = "1" DISCLOSED = "1">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "I2C Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "FEC0 Module Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "FEC1 Module Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "USB Interface Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                    <REGDISCLOSE NAME = "SRAM Module Registers" TYPE = "1" DISCLOSED = "0">
+                    </REGDISCLOSE>
+                </REGDISCLOSE>
+            </REGDISCLOSE>
+            </REGISTERWINDOW>
+    </WINDOW>
+    <WINDOW>
+        <SESSION>1073741824</SESSION>
+        <EDOCTYPE>28</EDOCTYPE>
+        <FRAMELOC>
+            <X>652</X>
+            <Y>33</Y>
+        </FRAMELOC>
+        <FRAMESIZE>
+            <W>518</W>
+            <H>519</H>
+        </FRAMESIZE>
+        <DOCKINFO>
+            <STATUS>0</STATUS>
+            <ROW></ROW>
+            <COLUMN></COLUMN>
+            <DOCKBARID></DOCKBARID>
+            <PCTWIDTH></PCTWIDTH>
+            <HGT></HGT>
+            <GROUPID>
+                <GIDHIGHPART></GIDHIGHPART>
+                <GIDLOWPART></GIDLOWPART>
+            </GROUPID>
+        </DOCKINFO>
+        <DEBUGCONTEXT>GlobalSession, cpu68K, osCWDS</DEBUGCONTEXT>
+        <DEBUGTARGETNAME>C:\FireBee\codewarrior\firebeeV1\bin\DDRAM.elf</DEBUGTARGETNAME>
+            <REGISTERWINDOW><WINDOWINDEX>0</WINDOWINDEX>
+            <DIVIDERPOS>373</DIVIDERPOS>
+            <REGDISCLOSE NAME = "" TYPE = "334367732" DISCLOSED = "0">
+            </REGDISCLOSE>
+            </REGISTERWINDOW>
+    </WINDOW>
+</MWIDEWORKSPACE>

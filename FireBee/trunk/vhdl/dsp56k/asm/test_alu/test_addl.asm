@@ -1,0 +1,9 @@
+	move	#>$55,a
+	clr		b
+	move	#>$55,b0
+	andi	#$00,ccr
+	addl	a,b
+	move	#>$AA,a
+	addl	a,b
+	move	#>$80,b2
+	addl	a,b

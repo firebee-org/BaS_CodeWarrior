@@ -1,0 +1,156 @@
+MPLINK 4.33, Linker
+Linker Map File - Created Mon Jan 11 14:35:58 2010
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+             Reset_Vector       code   0x000000    program   0x000004
+                   .cinit    romdata   0x000004    program   0x000002
+              LOW_INT_VEC       code   0x000018    program   0x00004a
+                    .code       code   0x000100    program   0x00033c
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000005      
+                            0x000018    0x000061      
+                            0x000100    0x00043b      
+            908 out of 33048 program addresses used, program memory utilization is 2%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                   AD_ISR   0x000326    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                      FEB   0x0003ee    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 HLVD_ISR   0x000300    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  HLVD_LE   0x00031a    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+              INT_HANDLER   0x00001e    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+             INT_HANDLER2   0x00002e    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+               KALT_START   0x000100    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                LADESTROM   0x0001d2    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+             LS_OFF_POWER   0x0001de    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+              LS_ON_POWER   0x0001d8    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                     MAIN   0x00019e    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+         MEHR_ALS_28_TAGE   0x0003e6    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+         MEHR_ALS_30_TAGE   0x000414    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  MINUTEN   0x0003c0    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+               NEXT_MONTH   0x0003fa    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 NON_SYNC   0x0002ae    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                NOT_APRIL   0x00041e    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  NOT_FEB   0x00040e    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 NOT_JUNI   0x000428    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  NOT_SEP   0x000432    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                    PINGS   0x000368    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                   PINGS2   0x000380    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                POWER_AUS   0x0001c0    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                POWER_EIN   0x0001a6    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+              POWER_OFF_I   0x000346    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+             POWER_OFF_I2   0x000356    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                   RC_ISR   0x000256    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  RC_ISR1   0x000268    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  RC_ISR2   0x000274    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                   RC_RFM   0x000290    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  RC_RRFP   0x000280    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 RC_SYNC2   0x0002b4    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 RC_SYNC3   0x0002c6    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 RC_SYNC4   0x0002d8    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+            RC_SYNC_START   0x00029c    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 RC_UNBEK   0x00027c    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 RC_WAIT1   0x0002e4    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 RC_WAIT2   0x0002ec    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 RC_WAIT3   0x0002f4    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  RESETEN   0x000232    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  RTC_ISR   0x000326    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+               SCHALTJAHR   0x0003f4    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 SEKUNDEN   0x000386    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                    SEK_2   0x0003ac    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  SEK_NPA   0x00039c    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+             SEND_RTC_REG   0x00020c    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  STUNDEN   0x0003ca    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+   TAGE_UND_TAG_DER_WOCHE   0x0003d4    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                    TASTE   0x0001e4    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                   TG_END   0x00022c    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                    TG_JA   0x0001fa    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+             TG_OFF_POWER   0x000224    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+              TG_ON_POWER   0x000206    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+             TG_ON_POWER2   0x000212    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+             TG_ON_POWER3   0x000218    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                   TX_ISR   0x00023c    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  TX_ISR1   0x000254    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+            TX_ISR_FERTIG   0x00024c    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+               WAIT_LVDOK   0x000312    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                   WARTEN   0x0001a0    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                     YEAR   0x000406    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+              INT_HANDLER   0x00001e    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+             INT_HANDLER2   0x00002e    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+               KALT_START   0x000100    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                     MAIN   0x00019e    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                   WARTEN   0x0001a0    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                POWER_EIN   0x0001a6    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                POWER_AUS   0x0001c0    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                LADESTROM   0x0001d2    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+              LS_ON_POWER   0x0001d8    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+             LS_OFF_POWER   0x0001de    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                    TASTE   0x0001e4    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                    TG_JA   0x0001fa    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+              TG_ON_POWER   0x000206    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+             SEND_RTC_REG   0x00020c    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+             TG_ON_POWER2   0x000212    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+             TG_ON_POWER3   0x000218    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+             TG_OFF_POWER   0x000224    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                   TG_END   0x00022c    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  RESETEN   0x000232    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                   TX_ISR   0x00023c    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+            TX_ISR_FERTIG   0x00024c    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  TX_ISR1   0x000254    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                   RC_ISR   0x000256    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  RC_ISR1   0x000268    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  RC_ISR2   0x000274    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 RC_UNBEK   0x00027c    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  RC_RRFP   0x000280    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                   RC_RFM   0x000290    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+            RC_SYNC_START   0x00029c    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 NON_SYNC   0x0002ae    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 RC_SYNC2   0x0002b4    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 RC_SYNC3   0x0002c6    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 RC_SYNC4   0x0002d8    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 RC_WAIT1   0x0002e4    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 RC_WAIT2   0x0002ec    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 RC_WAIT3   0x0002f4    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 HLVD_ISR   0x000300    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+               WAIT_LVDOK   0x000312    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  HLVD_LE   0x00031a    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  RTC_ISR   0x000326    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                   AD_ISR   0x000326    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+              POWER_OFF_I   0x000346    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+             POWER_OFF_I2   0x000356    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                    PINGS   0x000368    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                   PINGS2   0x000380    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 SEKUNDEN   0x000386    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  SEK_NPA   0x00039c    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                    SEK_2   0x0003ac    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  MINUTEN   0x0003c0    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  STUNDEN   0x0003ca    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+   TAGE_UND_TAG_DER_WOCHE   0x0003d4    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+         MEHR_ALS_28_TAGE   0x0003e6    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                      FEB   0x0003ee    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+               SCHALTJAHR   0x0003f4    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+               NEXT_MONTH   0x0003fa    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                     YEAR   0x000406    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  NOT_FEB   0x00040e    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+         MEHR_ALS_30_TAGE   0x000414    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                NOT_APRIL   0x00041e    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                 NOT_JUNI   0x000428    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+                  NOT_SEP   0x000432    program     static C:\firebee\MLAB\firebee1\firebee1.asm
+
+

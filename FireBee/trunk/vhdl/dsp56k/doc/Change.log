@@ -1,0 +1,185 @@
+Done:
+02.01.09
+ - Started work on pipeline (FE, FE2, DC, AG, EX)
+ - Program counter counts linearly
+ - Initial program memory holds program data
+ - Started work on instruction decoder
+03.01.09
+ - Jump instructions work (with flushing of the pipeline)
+ - First version of AGU implemented
+ - Detection of double word instructions
+ - Initial version of global register file
+04.01.09
+ - Included hardware stack
+ - Finished support for JSR and JSCC instructions
+ - RTI/RTS work
+ - ANDI/ORI work
+ - Initial work on REP instruction
+10.01.09
+ - Initial suppurt for X memory accesses. One stall cycle is introduced when
+   accessing the X memory.
+ - Finished implementation of REP instruction. Reading number of loops from
+   registers is still missing.
+ - Initial support for DO loops.
+ - Preventing to write the R registers when stalling occurs or a jump is
+   performed
+11.01.09
+ - Finished implementation of DO loops (stop looping at the end)
+ - Nested loops work
+ - Single instruction loops work
+ - ENDDO instruction implemented (very much the same as usual end of the loop)
+12.01.09
+ - Included Y memory and its addressing modes for REP and DO instruction.
+ - Setup of a sheet showing which types of which instructions have been 
+   implemented and how many clock cycles are needed.
+16.01.09
+ - Integration of LUA instruction.
+24.01.09
+ - Integrated different addressing schemes (immediate short, immediate long,
+   absolute address)
+ - Integration and test of MOVE(C) instruction. Some modes missing (writing to
+    memory)
+ - Testing of Y memory read accesses.
+26.01.09
+ - Continued testing of different addressing modes.
+ - Decoding for first parallel move operations.
+01.02.09
+ - Moved memory components to an extra entity (memory_management)
+ - Writing to internal X and Y memory supported. Problems are possible for 
+   reading the same address one instruction after writing at the same address!
+ - Included ALU registers (x,y,a,b) into register file
+ - Integration of x/y/l bus started
+03.02.09
+ - Continued testing of parallel moves (there are quite a few cases!)
+07.02.09
+ - Fixed REP instruction for instructions that are causing a stall due to
+   a memory read
+ - Fixed fetching from program data when stalling.
+ - Fixed detection of double word instruction, when previous instruction
+   used the AGU as well (forgot instruction word in sensitivity list).
+ - Continued testing of parallel moves.
+ - First synthesis run: Changed RAM description to map to BRAMs, removed 
+   latches, and many things are still missing, post-synthesis results:
+   - Xilinx Spartan3A, Speed-Grade -4
+   - 1488 FFs
+   - 4657 4-Input LUTs
+   - 3 BRAMs
+   - 71.08 MHz
+08.02.09
+  - Implemented second address generation unit in order to access X and Y
+    memory at the same time
+  - Implemented reverse carry addressing modes for FFT addressing
+  - Started implementation of modulo addressing.
+  - Set M0-M7 to -1 in reset.
+  - Downloaded the assembler for DSP56300. I hope to use it in order to
+    generate the content of the program memory automatically, which will
+    boost the testing speed...
+  - Encoding each instruction to test by hand just sucks. I think I will
+    integrate some bootloader in order to use the LOD files from the 
+    assembler to initiate the RAMs.
+  - Implementation of data shifter and limiter (when accessing a or b and
+    giving the result to XDB or YDB). Needs testing.
+  - Integration for L: addressing modes. Needs nesting.
+10.02.09
+  - Fixed decoding of X: and Y: adressing mode (collided with L: adressing)
+  - L: adressing modes are working
+14.02.09
+  - Implemented BCHG,BCLR,BSET,BTST,JCLR,JSCLR,JSET,JSSET. A lot of testing
+    is still needed. Peripheral register accesses are still missing.
+  - Second synthesis run: Removed new latches again.
+   , many things are still missing, post-synthesis results:
+   - Xilinx Spartan3A, Speed-Grade -4
+   - 1519 FFs
+   - 6210 4-Input LUTs
+   - 3 BRAMs
+   - 51.68 MHz
+   * Critical path for JSCLR/JSSET=> read limited a/b, go through bit modify
+     unit, test whether condition met, push data to stack. Reading of
+     limited A/B is probably a bug (DSP56001 UM says CCR is not changed,
+     in DSP56300 simulator the flag is set when reading a/b!!).
+15.02.09
+  - Started implementing the ALU.
+  - ABS works.
+  - MPY(R), MAC(R) implemented, rounding is missing.
+  - Clock frequency dropped to 41 MHz, but the critical path is not caused by
+    the MAC in the ALU! The multiplier is composed of four 18x18 multipliers
+    and still seems to be very fast!
+16.02.09
+  - Implemented decoding and controlling of ALU for
+    ADC, ADD, ADDL, ADDR, AND, ASL, ASR, CLR, CMP, CMPM, EOR, NEG, NOT, OR
+    Still missing ALU instructions:
+    DIV, NORM, RND, ROL, ROR, SBC, SUB, SUBL, SUBR, Tcc, TFR, TST
+    Except for DIV and NORM this will be straight forward.
+  - Other things that need to be done :
+    * Adress Generation Unit does not support modulo addressing.
+    * MOVEP/MOVEM/STOP/WAIT/ILLEGAL/RESET/SWI
+    * Interrupts
+    * External memory accesses
+    * Peripheral devices (SCI, SSI, Host port)
+17.02.09
+  - Implemented decoding and controlling of ALU instructions for
+    RND, ROL, ROR, SBC, SUB, SUBL, SUBR, TFR, TST
+    Still missing ALU instructions:
+    DIV, NORM, Tcc
+08.03.09
+  - Forgot integration of LSR and LSL instructions. TBD.
+  - Started integration of Condition flag generation in ALU.
+  - New synthesis run with ALU, register balancing: 
+   - Xilinx Spartan3A, Speed-Grade -4
+   - 3115 FFs
+   - 7417 4-Input LUTs
+   - 3 BRAMs
+   - 39.47 MHz
+13.03.09
+  - Integrated decoding of LSL/LSR instructions.
+  - Integrated rotating function into ALU.
+  - Included convergent rounding functionality into ALU.
+  - Implemented Tcc instruction.
+  - Implemented DIV instruction.
+15.03.09
+  - Tested ABS,ADC,ADD,ADDL,ADDR,AND,ASL,ASR,CLR,CMP,CMPM,DIV,EOR,
+    LSL,LSR,MPY,MPYR,MAC,MACR,NEG,NOT,OR
+  - Bugs fixed:
+    - Detection of overflow corrected when negating most negative
+      value $80 000000 000000.
+    - Decoding of ADC and TFR clarified.
+    - Overflow flag generation when left shifting of 56 bit values.
+    - For logical operations the flag generation relied on the adder
+      output which was wrong. Now relies on the Logical unit output.
+    - Decoding of CMPM clarified in order not to conflict with NOT.
+    - Shifter was used for CMP(M) instructions, which is wrong.
+    - Hopefully calculation of carry and overflow flag work correctly now...
+    - MPY/MAC write result back.
+    - Limit Flag is not cleared by the ALU anymore (has to be reset by the
+      user!).
+16.03.09
+  - Tested RND
+  - Bugs fixed:
+    - Simulator seems to misunderstand the X"1000000" where the first digit
+      represents a single bit. Comparing against this value fixed! RND works.
+
+17.03.09
+  - Tested ROR,ROL,SBC,SUB,SUBL,SUBR,TCC,TFR,TST,NORM
+  - Integrated logic for NORM instruction support.
+  - ALU is complete now!
+  - Bugs fixed:
+    - Fixed setting of CCR for ROL/ROR
+    - TCC didn't read register through ALU
+  - Known bugs:
+    - Carry calculation for SBC is still buggy
+  - New synthesis run with ALU, register balancing:
+   - Xilinx Spartan3A, Speed-Grade -4
+   - 1801 FFs
+   - 7407 4-Input LUTs
+   - 3 BRAMs
+   - 30.84 MHz
+   Critical path is in the ALU (multiplication, adding, rounding, zero-flag
+   calculation). I wonder why the values changed like that since the
+   last synthesis run.
+26.03.09
+  - Included support for modulo addressing in AGUs. This allows for the
+    integration of ring buffers. Now 7900 LUTs.
+18.05.10
+  - Commenting of code.
+  - Added second memory port for p-mem (needed for movem-instruction)
+
