@@ -1,9 +1,0 @@
-	move	#>$55,a
-	clr		b
-	move	#>$55,b0
-	andi	#$00,ccr
-	addr	a,b
-	move	#>$AA,a
-	addr	a,b
-	move	#>$80,b2
-	addr	a,b
