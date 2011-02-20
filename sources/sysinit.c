@@ -781,7 +781,7 @@ asm
 		init_slt();
 		init_fbcs();
 		init_ddram();
-// Ports nicht initialisieren wenn DIP Switch 6 = on
+// Ports nicht initialisieren wenn DIP Switch 5 = on
 asm
 {
 		move.b	DIP_SWITCH,d0					// dip schalter adresse
@@ -793,7 +793,7 @@ asm
 		init_fpga();
 		init_video_ddr();
  		vdi_on();
-// Ports nicht initialisieren wenn DIP Switch 6 = on
+// Ports nicht initialisieren wenn DIP Switch 5 = on
 asm
 {
 		move.b	DIP_SWITCH,d0					// dip schalter adresse
