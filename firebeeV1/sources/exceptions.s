@@ -421,13 +421,13 @@ flpoow:
 		nop
 irq1:
 		irq		0x64,1,0x02
-irq2:				//vsync
+irq2:				// hbl
 								//		move.b	#3,2(a7)
 								//		rte
 		irq		0x68,2,0x04
 irq3:
 		irq		0x6c,3,0x08
-irq4:				// vsync
+irq4:				// vbl
 		irq		0x70,4,0x10
 irq5:				// acp
 		irq		0x74,5,0x20
