@@ -179,11 +179,13 @@ loop_sr:
 		addq.l	#1,d1
 		cmp.b	d1,d2
 		bne		loop_sr
-		
+/*
+		// Set the NVRAM checksum as invalid
 		move.b	#63,(a0)
 		move.b	2(a0),d0
 		add		#1,d0
 		move.b	d0,2(a0)
+*/
 not_rtc:
 		bsr		mmu_init
 		bsr		vec_init
