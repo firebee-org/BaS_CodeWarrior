@@ -277,6 +277,21 @@ mem_clr_loop:
   		move.l	#0x1357bd13,d0				// ramvalid
    		move.l	d0,0x5a8
    		
+// init acia
+		moveq	#3,d0
+		move.b	d0,0xfffffc00
+		nop
+		move.b	d0,0xfffffc04
+		nop
+		moveq	#0x96,d0
+		move.b	d0,0xfffffc00
+		moveq	#-1,d0
+		nop
+		move.b	d0,0xfffffa0f
+		nop
+		move.b	d0,0xfffffa11
+		nop
+		
 // test auf protect mode ---------------------
 		move.b	DIP_SWITCH,d0
 		btst	#7,d0 
