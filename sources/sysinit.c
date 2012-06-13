@@ -178,14 +178,12 @@ void init_fbcs()
 		MCF_PSC0_PSCTB_8BIT = 'FBCS';
 		/* Flash */
  	MCF_FBCS0_CSAR 	= 0xE0000000;						// FLASH ADRESS
- 	MCF_FBCS0_CSCR 	= 0x00001180 						// 16 bit 4ws aa
-  					| MCF_FBCS_CSCR_RDAH(1);			// READ HOLD TIME 1 CYCLUS 
- 	MCF_FBCS0_CSMR 	= 0x007F0001;					 	// 8MB on
+ 	MCF_FBCS0_CSCR 	= 0x00001180;						// 16 bit 4ws aa
+ 	MCF_FBCS0_CSMR 	= 0x007F0001;					 	// 8MB on 
 		
 	MCF_FBCS1_CSAR	= 0xFFF00000;						// ATARI I/O ADRESS
 	MCF_FBCS1_CSCR 	= MCF_FBCS_CSCR_PS_16 				// 16BIT PORT 
 					| MCF_FBCS_CSCR_WS(8)				// DEFAULT 8WS
- 					| MCF_FBCS_CSCR_RDAH(1)				// READ HOLD TIME 1 CYCLUS 
  					| MCF_FBCS_CSCR_AA;					// AA 
 	MCF_FBCS1_CSMR 	= (MCF_FBCS_CSMR_BAM_1M 
 					| MCF_FBCS_CSMR_V);
@@ -193,15 +191,12 @@ void init_fbcs()
 	MCF_FBCS2_CSAR	= 0xF0000000;						// NEUER I/O ADRESS-BEREICH
 	MCF_FBCS2_CSCR 	= MCF_FBCS_CSCR_PS_32				// 32BIT PORT
 					| MCF_FBCS_CSCR_WS(8)				// DEFAULT 4WS
-  					| MCF_FBCS_CSCR_RDAH(1)				// READ HOLD TIME 1 CYCLUS 
 					| MCF_FBCS_CSCR_AA;					// AA 
 	MCF_FBCS2_CSMR 	= (MCF_FBCS_CSMR_BAM_128M 			// F000'0000-F7FF'FFFF
 					| MCF_FBCS_CSMR_V);
  	
 	MCF_FBCS3_CSAR	= 0xF8000000;						// NEUER I/O ADRESS-BEREICH
 	MCF_FBCS3_CSCR 	= MCF_FBCS_CSCR_PS_16				// 16BIT PORT
-					| MCF_FBCS_CSCR_WS(0)				// 0WS
- 					| MCF_FBCS_CSCR_RDAH(1)				// READ HOLD TIME 1 CYCLUS 
 					| MCF_FBCS_CSCR_AA;					// AA 
 	MCF_FBCS3_CSMR 	= (MCF_FBCS_CSMR_BAM_64M 			// F800'0000-FBFF'FFFF
 					| MCF_FBCS_CSMR_V);
@@ -327,7 +322,7 @@ asm
 		move.w	#1,0x44(a0)			// M low = 1
 
 		bsr		wait_pll
-		move.w	#165,0x04(a0)		// M high = 145 = 146MHz
+		move.w	#145,0x04(a0)		// M high = 145 = 146MHz
 
 		bsr		wait_pll
 		clr.b	(a1)				// set
@@ -550,7 +545,7 @@ void vdi_on(void)
 
  		 
 		MCF_PSC0_PSCTB_8BIT = 'DVI ';
-		MCF_I2C_I2FDR = 0x34;			// 100kHz standard
+		MCF_I2C_I2FDR = 0x3c;			// 100kHz standard
 		versuche = 0;
 loop_i2c:
 		if (versuche++>10) goto next;
@@ -563,90 +558,98 @@ loop_i2c:
 		MCF_I2C_I2ICR = 0x01;
  
 		MCF_I2C_I2CR = 0xb0;
-		MCF_I2C_I2DR = 0x7A;
-		warte_100us();
-		if (MCF_I2C_I2SR!=0xa2 | MCF_I2C_I2CR!=0xb0) goto loop_i2c;
-		MCF_I2C_I2SR &= 0xfd;
-	
-		MCF_I2C_I2DR = 0x00;					// SUB ADRESS 0
+		
+		MCF_I2C_I2DR = 0x7a;								// ADRESSE TFP410
+		while(!(MCF_I2C_I2SR & MCF_I2C_I2SR_IIF)) ;			// warten auf fertig
+		MCF_I2C_I2SR &= 0xfd;								// clear bit
+
+		if (MCF_I2C_I2SR & MCF_I2C_I2SR_RXAK) goto loop_i2c; // ack erhalten? -> nein
+
+tpf_410_ACK_OK:
+		MCF_I2C_I2DR = 0x00;								// SUB ADRESS 0
 		while(!(MCF_I2C_I2SR & MCF_I2C_I2SR_IIF)) ;
 		MCF_I2C_I2SR &= 0xfd;
 
-		MCF_I2C_I2CR |= 0x4;					// repeat start
+		MCF_I2C_I2CR |= 0x4;								// repeat start
 	
-		MCF_I2C_I2DR = 0x7b;					// beginn read
-		warte_100us();
-		if (MCF_I2C_I2SR!=0xa6 | MCF_I2C_I2CR!=0xb0) goto loop_i2c;
-		MCF_I2C_I2SR &= 0xfd;
+		MCF_I2C_I2DR = 0x7b;								// beginn read
+		while(!(MCF_I2C_I2SR & MCF_I2C_I2SR_IIF)) ;			// warten auf fertig
+		MCF_I2C_I2SR &= 0xfd;								// clear bit
 
-		MCF_I2C_I2CR &= 0xef;					// switch to rx	
-		DBYT = MCF_I2C_I2DR;					// dummy read
+		if (MCF_I2C_I2SR & MCF_I2C_I2SR_RXAK) goto loop_i2c; // ack erhalten? -> nein
+
+
+		MCF_I2C_I2CR &= 0xef;								// switch to rx	
+		DBYT = MCF_I2C_I2DR;								// dummy read
 
 		while(!(MCF_I2C_I2SR & MCF_I2C_I2SR_IIF)) ;
 		MCF_I2C_I2SR &= 0xfd;
 		
-		MCF_I2C_I2CR |= 0x08;					// txak=1
+		MCF_I2C_I2CR |= 0x08;								// txak=1
 
-		warte_100us();
 		RBYT = MCF_I2C_I2DR;
 
 		while(!(MCF_I2C_I2SR & MCF_I2C_I2SR_IIF)) ;
 		MCF_I2C_I2SR &= 0xfd;
 
-		MCF_I2C_I2CR = 0x0;						// stop
-		DBYT = MCF_I2C_I2DR;					// dummy read
+		MCF_I2C_I2CR = 0x80;								// stop
+		DBYT = MCF_I2C_I2DR;								// dummy read
 
 		if (RBYT!=0x4c) goto loop_i2c;
 		
 
 i2c_ok:
-		MCF_I2C_I2CR = 0x0;						// stop
-		MCF_I2C_I2SR = 0x0;						// clear sr
-		while((MCF_I2C_I2SR & MCF_I2C_I2SR_IBB)) ; // wait auf bus free
+		MCF_I2C_I2CR = 0x0;									// stop
+		MCF_I2C_I2SR = 0x0;									// clear sr
+		while((MCF_I2C_I2SR & MCF_I2C_I2SR_IBB)) ; 			// wait auf bus free
 		
-		MCF_I2C_I2CR = 0xb0;					// on tx master	
+		MCF_I2C_I2CR = 0xb0;								// on tx master	
 		MCF_I2C_I2DR = 0x7A;
-		warte_50us();
-		if (MCF_I2C_I2SR!=0xa2 | MCF_I2C_I2CR!=0xb0) goto loop_i2c;
-		MCF_I2C_I2SR &= 0xfd;
-	
-		MCF_I2C_I2DR = 0x08;					// SUB ADRESS 8
+		while(!(MCF_I2C_I2SR & MCF_I2C_I2SR_IIF)) ;			// warten auf fertig
+		MCF_I2C_I2SR &= 0xfd;								// clear bit
+
+		if (MCF_I2C_I2SR & MCF_I2C_I2SR_RXAK) goto loop_i2c; // ack erhalten? -> nein
+
+		MCF_I2C_I2DR = 0x08;								// SUB ADRESS 8
 		while(!(MCF_I2C_I2SR & MCF_I2C_I2SR_IIF)) ;
 		MCF_I2C_I2SR &= 0xfd;
 
-		MCF_I2C_I2DR = 0xbf;					// ctl1: power on, T:M:D:S: enable
-		while(!(MCF_I2C_I2SR & MCF_I2C_I2SR_IIF)) ;
-		MCF_I2C_I2SR &= 0xfd;
+		MCF_I2C_I2DR = 0xbf;								// ctl1: power on, T:M:D:S: enable
+		while(!(MCF_I2C_I2SR & MCF_I2C_I2SR_IIF)) ;			// warten auf fertig
+		MCF_I2C_I2SR &= 0xfd;								// clear bit
 
-		MCF_I2C_I2CR = 0x0;						// stop
-		MCF_I2C_I2SR = 0x0;						// clear sr
+		MCF_I2C_I2CR = 0x80;								// stop
+		DBYT = MCF_I2C_I2DR;								// dummy read
+		MCF_I2C_I2SR = 0x0;									// clear sr
 
-		while((MCF_I2C_I2SR & MCF_I2C_I2SR_IBB)) ; // wait auf bus free
+		while((MCF_I2C_I2SR & MCF_I2C_I2SR_IBB)) ; 			// wait auf bus free
 
 		MCF_I2C_I2CR = 0xb0;
 		MCF_I2C_I2DR = 0x7A;
-		warte_50us();
-		if (MCF_I2C_I2SR!=0xa2 | MCF_I2C_I2CR!=0xb0) goto loop_i2c;
-		MCF_I2C_I2SR &= 0xfd;
-		
-		MCF_I2C_I2DR = 0x08;					// SUB ADRESS 8
+		while(!(MCF_I2C_I2SR & MCF_I2C_I2SR_IIF)) ;			// warten auf fertig
+		MCF_I2C_I2SR &= 0xfd;								// clear bit
+
+		if (MCF_I2C_I2SR & MCF_I2C_I2SR_RXAK) goto loop_i2c; // ack erhalten? -> nein
+
+		MCF_I2C_I2DR = 0x08;								// SUB ADRESS 8
 		while(!(MCF_I2C_I2SR & MCF_I2C_I2SR_IIF)) ;
 		MCF_I2C_I2SR &= 0xfd;
 
-		MCF_I2C_I2CR |= 0x4;					// repeat start
-		MCF_I2C_I2DR = 0x7b;					// beginn read
-		warte_50us();
-		if (MCF_I2C_I2SR!=0xa6 | MCF_I2C_I2CR!=0xb0) goto loop_i2c;
-		MCF_I2C_I2SR &= 0xfd;
+		MCF_I2C_I2CR |= 0x4;								// repeat start
+		MCF_I2C_I2DR = 0x7b;								// beginn read
+		while(!(MCF_I2C_I2SR & MCF_I2C_I2SR_IIF)) ;			// warten auf fertig
+		MCF_I2C_I2SR &= 0xfd;								// clear bit
 
-		MCF_I2C_I2CR &= 0xef;					// switch to rx	
+		if (MCF_I2C_I2SR & MCF_I2C_I2SR_RXAK) goto loop_i2c; // ack erhalten? -> nein
 
-		DBYT = MCF_I2C_I2DR;					// dummy read
+		MCF_I2C_I2CR &= 0xef;								// switch to rx	
+
+		DBYT = MCF_I2C_I2DR;								// dummy read
 
 		while(!(MCF_I2C_I2SR & MCF_I2C_I2SR_IIF)) ;
 		MCF_I2C_I2SR &= 0xfd;
 		
-		MCF_I2C_I2CR |= 0x08;					// txak=1
+		MCF_I2C_I2CR |= 0x08;								// txak=1
 
 		warte_50us();
 		RBYT = MCF_I2C_I2DR;
@@ -654,18 +657,18 @@ i2c_ok:
 		while(!(MCF_I2C_I2SR & MCF_I2C_I2SR_IIF)) ;
 		MCF_I2C_I2SR &= 0xfd;
 
-		MCF_I2C_I2CR = 0x0;						// stop
-		DBYT = MCF_I2C_I2DR;					// dummy read
+		MCF_I2C_I2CR = 0x80;								// stop
+		DBYT = MCF_I2C_I2DR;								// dummy read
 
 		if (RBYT!=0xbf) goto loop_i2c;
 		
 		goto	dvi_ok;
 next:
-		MCF_I2C_I2CR = 0x0;						// stop
 		MCF_PSC0_PSCTB_8BIT = 'NOT ';
 dvi_ok:
 		MCF_PSC0_PSCTB_8BIT = 'OK! ';
 		MCF_PSC0_PSCTB_8BIT = 0x0a0d;
+		MCF_I2C_I2CR = 0x0;									// i2c off
 }
 
 /********************************************************************/
@@ -800,10 +803,10 @@ asm
 		btst.b	#6,d0
 		beq		not_init_ports2
 }
-//  		video_1280_1024();
   		test_upd720101();
-not_init_ports2:
+//  		video_1280_1024(); 
   		init_ac97();
+not_init_ports2:
 
 asm
 {
