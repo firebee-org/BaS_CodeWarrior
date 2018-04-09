@@ -5,7 +5,7 @@
 #define __MBAR  				0xff000000
 #define MCF_SLT0_SCNT           __MBAR + 0x908
 #define MCF_PSC0_PSCTB_8BIT		__MBAR + 0x860C
-#define MCF_PAD_PAR_DSPI        __MBAR + 0xA50
+#define MCF_PAD_PAR_DSPI        __MBAR + 0xa30
 #define MCF_DSPI_DMCR		    __MBAR + 0x8A00		//dspi control
 
 #define	dspi_dtar0	0x0c
@@ -115,7 +115,7 @@ int sd_card_init(void)
 		move.l  	#'SD-C',(a1)
 		move.l  	#'ard ',(a1)
 
-		move.l		buffer,a5					// basis addresse (diesen bereich brauchen wir nicht mehr!)
+		move.l		buffer,a3					// basis addresse (diesen bereich brauchen wir nicht mehr!)
 		move.l		#0x1fffffff,d0				// normal dspi
 		move.l		d0,MCF_PAD_PAR_DSPI
 		lea			MCF_DSPI_DMCR,a0
@@ -301,11 +301,11 @@ read_cid:
 		move.b		#0x95,d4
 		bsr			sd_com
 		
-		move.l		a5,a2				// adresse setzen
+		move.l		a3,a2				// adresse setzen
 		bsr			sd_rcv_info
 
 // name ausgeben
-		lea			1(a5),a2
+		lea			1(a3),a2
 		moveq		#7,d7
 sd_nam_loop:
 		move.b		(a2)+,(a1)
@@ -330,19 +330,19 @@ read_csd:
 		move.b		#0x01,d4
 		bsr			sd_com
 		
-		move.l		a5,a2				// adresse setzen
+		move.l		a3,a2				// adresse setzen
 		bsr			sd_rcv_info
 
-		mvz.b		(a5),d0
+		mvz.b		(a3),d0
 		lsr.l		#6,d0
 		
 		bne			sd_csd2				// format v2
-		move.l		6(a5),d1
+		move.l		6(a3),d1
 		moveq		#14,d0				// bit 73..62 c_size
 		lsr.l		d0,d1				// bits extrahieren
 		and.l		#0xfff,d1			// 12 bits
 		addq.l		#1,d1
-		mvz.w		9(a5),d0
+		mvz.w		9(a3),d0
 		lsr.l		#7,d0				// bits 49..47
 		and.l		#0x7,d0				// 3 bits
 		moveq.l		#8,d2				// x256 (dif v1 v2)
@@ -350,7 +350,7 @@ read_csd:
 		lsr.l		d2,d1
 		bra			sd_print_size
 sd_csd2:
-		mvz.w		8(a5),d1
+		mvz.w		8(a3),d1
 		addq.l		#1,d1
 sd_print_size:
 		swap		d1
@@ -468,7 +468,7 @@ sd_rs_end:
 
 int sd_card_sector_read(long sec_nr,long buf_adr)
 {
-		int			status ;
+		int			status=0 ;
 	asm
 	{
 		lea			MCF_DSPI_DMCR,a0
@@ -554,7 +554,7 @@ sd_send_end:
 
 int sd_card_sector_write(long sec_nr,long buf_adr)
 {
-		int			status;
+		int			status=0;
 	asm
 	{
 		lea			MCF_DSPI_DMCR,a0

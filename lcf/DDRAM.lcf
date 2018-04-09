@@ -68,8 +68,8 @@ _rt_mbar   = ___RAMBAR0 + 0x844;   	# (c)0f
 # 32KB on-chip System SRAM
    ___SYS_SRAM             = 0xFF010000;
    ___SYS_SRAM_SIZE        = 0x00008000;
-  
-  
+   
+
 	.text :
 	{
 		startcf.c(.text)
@@ -79,10 +79,13 @@ _rt_mbar   = ___RAMBAR0 + 0x844;   	# (c)0f
 		mmu.s(.text)
 		exceptions.s(.text)
 		supervisor.s(.text)
-		ewf.s(.text)
 		illegal_instruction.s(.text)
+		MCD_dmaApi.c(.*)
+		MCD_tasksInit.c(.*)
+		MCD_tasks.c(.*)
 		last.c(.text)
-		. = ALIGN (0x4);
+		__SDA_BASE = .;
+#		. = ALIGN (0x4);
 	} > code
 
 }

@@ -4,7 +4,7 @@
 
 .include "startcf.h"
 
-.extern ___Bas_base
+.extern ___SDRAM_SIZE
 .extern ___SUP_SP
 .extern ___BOOT_FLASH
 .extern ___RAMBAR0
@@ -362,7 +362,7 @@ access_mmu:
 		btst	#1,d0
 		bne		bus_error
 		move.l	MCF_MMU_MMUAR,d0
-		cmp.l	#___Bas_base,d0		// max User RAM Bereich
+		cmp.l	#___SDRAM_SIZE,d0		// max User RAM Bereich
 		bge		bus_error			// grösser -> bus error
 		bra		_mmutr_miss
 bus_error:
@@ -421,13 +421,13 @@ flpoow:
 		nop
 irq1:
 		irq		0x64,1,0x02
-irq2:				// hbl
+irq2:				//vsync
 								//		move.b	#3,2(a7)
 								//		rte
 		irq		0x68,2,0x04
 irq3:
 		irq		0x6c,3,0x08
-irq4:				// vbl
+irq4:				// vsync
 		irq		0x70,4,0x10
 irq5:				// acp
 		irq		0x74,5,0x20

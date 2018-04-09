@@ -20,10 +20,8 @@
 
 */
 /********************************************************************************/
+#ifdef ii_on
 
-#define cf_stack
-
-//#define ii_on
 #define halten
 #define halten_dbcc
 #define halten_and
@@ -39,6 +37,8 @@
 #define halten_exg
 #define halten_movep
 #define halten_ewf
+
+#endif
 
 #define DIP_SWITCH		(*(vuint8 *)(&__MBAR[0xA2C]))
 #define DIP_SWITCHa		___MBAR + 0xA2C

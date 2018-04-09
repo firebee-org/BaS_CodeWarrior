@@ -6,7 +6,7 @@
     <targetprocessor>5474</targetprocessor>
     <connection>PEMICRO_USB</connection>
     <usetargetinit>true</usetargetinit>
-    <targetinitfile>C:\FireBee\codewarrior\firebeeV1\cfg\mem.cfg</targetinitfile>
+    <targetinitfile></targetinitfile>
     <targetmembuffaddr>0x00000000</targetmembuffaddr>
     <targetmembuffsize>0x00006000</targetmembuffsize>
     <enablelogging>true</enablelogging>

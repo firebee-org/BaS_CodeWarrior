@@ -5,13 +5,15 @@ KEEP_SECTION {.vectortable}
 # Memory ranges	
 
 MEMORY {
-   code        (RX)  : ORIGIN = 0xE0000000, LENGTH = 0x00200000
+   userram     (RWX) : ORIGIN = 0x00010000, LENGTH = 0x10000000
+   code        (RX)  : ORIGIN = 0xE0000000, LENGTH = 0x00100000
 }
 
 SECTIONS {
- 
-#BaS Basis adresse
-	___Bas_base		  = 0x1FE00000;
+
+# Heap and Stack sizes definition
+	___heap_size	  = 0x10000;
+	___stack_size     = 0x10000;
 
 # Board Memory map definitions from linker command files:
 # __SDRAM,__SDRAM_SIZE, __CODE_FLASH, __CODE_FLASH_SIZE 
@@ -37,12 +39,10 @@ SECTIONS {
 # 4KB on-chip Core SRAM0: -> exception table and exception stack
    ___RAMBAR0              = 0xFF100000;
    ___RAMBAR0_SIZE         = 0x00001000;
-
-   ___SUP_SP = ___RAMBAR0 + ___RAMBAR0_SIZE - 4;
-   
 # 4KB on-chip Core SRAM1: -> modified code
    ___RAMBAR1              = 0xFF101000;
    ___RAMBAR1_SIZE         = 0x00001000;
+
 
 # Systemveriablem:******************************************
 # RAMBAR0 0 bis 0x7FF -> exception vectoren
@@ -69,20 +69,86 @@ _rt_mbar   = ___RAMBAR0 + 0x844;   	# (c)0f
    ___SYS_SRAM             = 0xFF010000;
    ___SYS_SRAM_SIZE        = 0x00008000;
 
+   ___SUP_SP = ___RAMBAR0 + ___RAMBAR0_SIZE - 4;
+   
+  .userram	  : {} > userram		
   .code	    : {} > code		
 
 	.text :
 	{
-		startcf.c(.text)
-		sysinit.c(.text)
-		BaS.c(.text)
-		sd_card.c(.text)
-		mmu.s(.text)
-		exceptions.s(.text)
-		supervisor.s(.text)
-		ewf.s(.text)
-		illegal_instruction.s(.text)
-		last.c(.text)
+		*(.text)
+		. = ALIGN (0x4);
+		*(.rodata)
+		. = ALIGN (0x4);		
+		___ROM_AT = .;
+		___DATA_ROM = .;
+
 	} >> code
 
+	.data : AT(___ROM_AT) 
+	{
+		___DATA_RAM = .;
+		. = ALIGN(0x4);
+		*(.exception)	
+		. = ALIGN(0x4);	
+		__exception_table_start__ = .;
+		EXCEPTION
+		__exception_table_end__ = .;
+		___sinit__ = .;
+	    STATICINIT
+		__START_DATA = .;
+		*(.data)
+		. = ALIGN (0x4);
+		__END_DATA = .;
+		__START_SDATA = .;
+		*(.sdata)
+		. = ALIGN (0x4);
+		__END_SDATA = .;
+		___DATA_END = .;
+		__SDA_BASE = .;
+		. = ALIGN (0x4);
+	} >> userram
+
+	.bss :
+	{
+		___BSS_START = .;
+		__START_SBSS = .;
+		*(.sbss)
+		. = ALIGN (0x4);
+		*(SCOMMON)
+		__END_SBSS = .;
+
+		__START_BSS = .;
+		*(.bss)
+		. = ALIGN (0x4);
+		*(COMMON)
+		__END_BSS = .;
+		___BSS_END = .;
+
+		. = ALIGN(0x4);
+	} >> userram
+	.custom :
+	{
+		___HEAP_START	= .;
+		___heap_addr	= ___HEAP_START;
+		___HEAP_END		= ___HEAP_START + ___heap_size;
+		___SP_END		= ___HEAP_END;
+		___SP_INIT		= ___SP_END + ___stack_size;
+
+		. = ALIGN (0x4);
+	} >> userram
+  	
+	__SP_INIT		= ___SP_INIT;
+
+	_romp_at = ___ROM_AT + SIZEOF(.data);
+	.romp : AT(_romp_at)
+	{
+		__S_romp = _romp_at;
+		WRITEW(___ROM_AT);
+		WRITEW(ADDR(.data));
+		WRITEW(SIZEOF(.data));
+		WRITEW(0);
+		WRITEW(0);
+		WRITEW(0);
+	}
 }

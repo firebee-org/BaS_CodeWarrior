@@ -12,7 +12,6 @@ extern unsigned long far __VRAM;
 extern unsigned long far __BOOT_FLASH[]; 
 
 extern void warte_10us();
-extern void warte_1ms();
 extern void set_ide_access_mode();
 
 extern unsigned long far rt_cacr;
@@ -121,17 +120,7 @@ void init_seriel(void)
 		MCF_PSC3_PSCCR = 0x05;
 		MCF_INTC_ICR32 = 0x3F;		//MAXIMALE PRIORITY/**********/
 
-		MCF_PSC0_PSCTB_8BIT = 0x0a0a0a0d;
-		MCF_PSC0_PSCTB_8BIT = 'BaS ';
-		MCF_PSC0_PSCTB_8BIT = '13.0';
-		MCF_PSC0_PSCTB_8BIT = '5.20';
-		MCF_PSC0_PSCTB_8BIT = '17';
-		MCF_PSC0_PSCTB_8BIT = 0x0a0d;	
-		MCF_PSC0_PSCTB_8BIT = '====';
-		MCF_PSC0_PSCTB_8BIT = '====';
-		MCF_PSC0_PSCTB_8BIT = '====';
-		MCF_PSC0_PSCTB_8BIT = '==';
-		MCF_PSC0_PSCTB_8BIT = 0x0a0d;	
+		MCF_PSC0_PSCTB_8BIT = 0x0a0d;
 		MCF_PSC0_PSCTB_8BIT = 'SERI';
 		MCF_PSC0_PSCTB_8BIT = 'AL O';
 		MCF_PSC0_PSCTB_8BIT = 'K!  ';
@@ -189,11 +178,13 @@ void init_fbcs()
 {
  	MCF_PSC0_PSCTB_8BIT = 'FBCS';
 		
-	MCF_FBCS1_CSAR	= 0xFFF80000;						// FFF8'0000-FFFF'FFFF: ATARI I/O ADRESS 
+	MCF_FBCS1_CSAR	= 0xFFF00000;						// ATARI I/O ADRESS
 	MCF_FBCS1_CSCR 	= MCF_FBCS_CSCR_PS_16 				// 16BIT PORT 
-					| MCF_FBCS_CSCR_WS(63)				// DEFAULT 63WS
+					| MCF_FBCS_CSCR_WS(32)				// DEFAULT 32WS
+					| MCF_FBCS_CSCR_BSTR				// Burst read enable
+					| MCF_FBCS_CSCR_BSTW				// Burst write enable
 					| MCF_FBCS_CSCR_AA;					// AA 
-	MCF_FBCS1_CSMR 	= (MCF_FBCS_CSMR_BAM_512K 
+	MCF_FBCS1_CSMR 	= (MCF_FBCS_CSMR_BAM_1M 
 					| MCF_FBCS_CSMR_V);
 
 	MCF_FBCS2_CSAR	= 0xF0000000;						// NEUER I/O ADRESS-BEREICH
@@ -203,13 +194,13 @@ void init_fbcs()
 	MCF_FBCS2_CSMR 	= (MCF_FBCS_CSMR_BAM_128M 			// F000'0000-F7FF'FFFF
 					| MCF_FBCS_CSMR_V);
  	
-	MCF_FBCS3_CSAR	= 0xFFF00000;						// IDE I/O ADRESS-BEREICH BURST!
+	MCF_FBCS3_CSAR	= 0xF8000000;						// NEUER I/O ADRESS-BEREICH
 	MCF_FBCS3_CSCR 	= MCF_FBCS_CSCR_PS_16				// 16BIT PORT
-					| MCF_FBCS_CSCR_WS(16)				// DEFAULT 16WS
+					| MCF_FBCS_CSCR_WS(32)				// DEFAULT 32WS
 					| MCF_FBCS_CSCR_BSTR				// Burst read enable
 					| MCF_FBCS_CSCR_BSTW				// Burst write enable
 					| MCF_FBCS_CSCR_AA;					// AA 
-	MCF_FBCS3_CSMR 	= (MCF_FBCS_CSMR_BAM_512K 			// FFF0'0000-FFF7'FFFF
+	MCF_FBCS3_CSMR 	= (MCF_FBCS_CSMR_BAM_64M 			// F800'0000-FBFF'FFFF
 					| MCF_FBCS_CSMR_V);
  
 	MCF_FBCS4_CSAR	= 0x40000000;						// VIDEO RAM BEREICH,
@@ -257,87 +248,23 @@ test_STATUS:
 		jsr			warte_10us							// warten
 
   		lea			0xE0700000,a0						// startadresse fpga daten
-  		moveq		#0x4,d2
-  		moveq		#0x6,d3
-  		moveq		#0xc,d4
-  		moveq		#0xe,d5
 word_send_loop:
 		cmp.l		#0xE0800000,a0
 		bgt			fpga_error
 		move.b		(a0)+,d0							// 32 bit holen
+		moveq		#8,d1								// 32 bit ausgeben
+bit_send_loop:
 		lsr.l		#1,d0								// bit rausschieben
-		bcs			bit_is_10							// data bit3, #config bit2, clock bit1
-		move.b		d2,(a1)							// data low, config high, clk low
-		move.b		d3,(a1)							// data low, config high, clk high
-		bra			bit_send0
-bit_is_10:
-		move.b		d4,(a1)							// clk low, config high, data high
-		move.b		d5,(a1)							// clk high, config high, data high
-bit_send0:
-		lsr.l		#1,d0								// bit rausschieben
-		bcs			bit_is_11							// data bit3, #config bit2, clock bit1
-		move.b		d2,(a1)							// data low, config high, clk low
-		move.b		d3,(a1)							// data low, config high, clk high
-		bra			bit_send1
-bit_is_11:
-		move.b		d4,(a1)							// clk low, config high, data high
-		move.b		d5,(a1)							// clk high, config high, data high
-bit_send1:
-		lsr.l		#1,d0								// bit rausschieben
-		bcs			bit_is_12							// data bit3, #config bit2, clock bit1
-		move.b		d2,(a1)							// data low, config high, clk low
-		move.b		d3,(a1)							// data low, config high, clk high
-		bra			bit_send2
-bit_is_12:
-		move.b		d4,(a1)							// clk low, config high, data high
-		move.b		d5,(a1)							// clk high, config high, data high
-bit_send2:
-		lsr.l		#1,d0								// bit rausschieben
-		bcs			bit_is_13							// data bit3, #config bit2, clock bit1
-		move.b		d2,(a1)							// data low, config high, clk low
-		move.b		d3,(a1)							// data low, config high, clk high
-		bra			bit_send3
-bit_is_13:
-		move.b		d4,(a1)							// clk low, config high, data high
-		move.b		d5,(a1)							// clk high, config high, data high
-bit_send3:
-		lsr.l		#1,d0								// bit rausschieben
-		bcs			bit_is_14							// data bit3, #config bit2, clock bit1
-		move.b		d2,(a1)							// data low, config high, clk low
-		move.b		d3,(a1)							// data low, config high, clk high
-		bra			bit_send4
-bit_is_14:
-		move.b		d4,(a1)							// clk low, config high, data high
-		move.b		d5,(a1)							// clk high, config high, data high
-bit_send4:
-		lsr.l		#1,d0								// bit rausschieben
-		bcs			bit_is_15							// data bit3, #config bit2, clock bit1
-		move.b		d2,(a1)							// data low, config high, clk low
-		move.b		d3,(a1)							// data low, config high, clk high
-		bra			bit_send5
-bit_is_15:
-		move.b		d4,(a1)							// clk low, config high, data high
-		move.b		d5,(a1)							// clk high, config high, data high
-bit_send5:
-		lsr.l		#1,d0								// bit rausschieben
-		bcs			bit_is_16							// data bit3, #config bit2, clock bit1
-		move.b		d2,(a1)							// data low, config high, clk low
-		move.b		d3,(a1)							// data low, config high, clk high
-		bra			bit_send6
-bit_is_16:
-		move.b		d4,(a1)							// clk low, config high, data high
-		move.b		d5,(a1)							// clk high, config high, data high
-bit_send6:
-		lsr.l		#1,d0								// bit rausschieben
-		bcs			bit_is_17							// data bit3, #config bit2, clock bit1
-		move.b		d2,(a1)							// data low, config high, clk low
-		move.b		d3,(a1)							// data low, config high, clk high
-		bra			bit_send7
-bit_is_17:
-		move.b		d4,(a1)							// clk low, config high, data high
-		move.b		d5,(a1)							// clk high, config high, data high
-bit_send7:
-// test auf fertig
+		bcs			bit_is_1							
+		bclr		#3,(a1)
+		bra			bit_send
+bit_is_1:
+		bset		#3,(a1)
+bit_send:
+		bset		#1,(a1)								// clock=high
+		bclr		#1,(a1)								// clock=low
+		subq.l		#1,d1
+		bne			bit_send_loop						// wiederholen bis fertig
 		btst		#5,(a2)								// fpga fertig, conf_done=high?
 		beq			word_send_loop						// nein, next word->
 		move.l		#4000,d1
@@ -471,7 +398,7 @@ void init_video_ddr(void)
 /********************************************************************/
 	/* video mit auflösung 1280x1000 137MHz /*
 /********************************************************************/
-/*
+
 void video_1280_1024(void)
 {
 extern int wait_pll;
@@ -553,7 +480,8 @@ flo6:	cmp.l	a2,a3
 		move.w	#7,0x44(a0)
 		move.w	#7,0x46(a0)
 		move.b	#1,0x60(a0)
-		halt
+*/		
+//		halt
 		
 	}
 
@@ -914,33 +842,33 @@ _init_hardware:
 	init_slt();
 	init_fbcs();
 		
-	init_fpga();
-	init_video_ddr();
-	vdi_on();
-	// Ports nicht initialisieren wenn DIP Switch 6 = on
+// ACP_CONF setzen und Ports nicht initialisieren wenn DIP Switch 6 = on
 	asm
 	{
-	// IDE reset
-		lea		0xffff8802,a0			// IDE reset
-		move.b	#14,-2(a0)
-		move.b	#0x80,(a0)
-		bsr		warte_1ms
-		clr.b	(a0)
-	// dip switch	
-		move.b		DIP_SWITCH,d0					// dip schalter adresse
-		move.b		d0,0xF0040002		// acp conf +2
-	// ACP_CONF setzen und Ports nicht initialisieren wenn DIP Switch 6 = on
+		move.b		DIP_SWITCH,d0		// dip schalter adresse
 		btst.b		#6,d0
 		beq			not_init_ports
 	}
- 		init_PCI();		//pci braucht zeit
-  		init_ac97();
-  		test_upd720101();
-//  	video_1280_1024(); 
+ 	init_PCI();		//pci braucht zeit
+not_init_ports:
+	init_fpga();
+	init_video_ddr();
+	vdi_on();
+// Ports nicht initialisieren wenn DIP Switch 6 = on
+	asm
+	{
+		move.b		DIP_SWITCH,d0					// dip schalter adresse
+		move.b		d0,0xF0040002		// acp conf +2
+		btst.b		#6,d0
+		beq			not_init_ports2
+	}
+  	test_upd720101();
+  	init_ac97();
   	asm
   	{
-not_init_ports:
+not_init_ports2:
 	}
+//  	video_1280_1024(); 
 	set_ide_access_mode();
 
 }

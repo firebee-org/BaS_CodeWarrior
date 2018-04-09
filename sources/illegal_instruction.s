@@ -1,7 +1,9 @@
 .public 	_illegal_instruction
 .public 	_illegal_table_make
 
+
 .include 	"startcf.h"
+#ifdef	ii_on 
 .include	"ii_macro.h"
 .include	"ii_func.h"
 .include	"ii_op.h"
@@ -19,6 +21,7 @@
 .include	"ii_movep.h"
 .include	"ii_ewf.h"
 .include	"ii_move.h"
+#endif
 
 .extern		_ii_shift_vec
 .extern		ewf

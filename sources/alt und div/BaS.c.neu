@@ -12,7 +12,8 @@
 #define MMAP_DMA       0x00008000
 #define MMAP_SRAM      0x00010000
 
-extern unsigned long far __SDRAM_SIZE;
+extern unsigned long far __SP_AFTER_RESET[];
+extern unsigned long far __Bas_base[];
 
 	/* imported routines */
 extern int mmu_init();
@@ -31,12 +32,11 @@ void warte_10ms(void)
 	{
 warte_10ms:
 		move.l		d0,-(sp) 		
-  		move.l		#1330000,d0
-  		move.l		d0,MCF_SLT0_STCNT
+  		move.l		MCF_SLT0_SCNT,d0
+  		sub.l		#1320000,d0
  warte_d6:
- 		move.b		MCF_SLT0_SSR,d0
-		btst.b		#0,d0
-		beq			warte_d6
+		cmp.l		MCF_SLT0_SCNT,d0
+		bcs			warte_d6
 		move.l		(sp)+,d0
 	}
 }
@@ -47,12 +47,11 @@ void warte_1ms(void)
 	{
 warte_1ms:
 		move.l		d0,-(sp) 		
-  		move.l		#133000,d0
-  		move.l		d0,MCF_SLT0_STCNT
+  		move.l		MCF_SLT0_SCNT,d0
+  		sub.l		#132000,d0
  warte_d6:
- 		move.b		MCF_SLT0_SSR,d0
-		btst.b		#0,d0
-		beq			warte_d6
+		cmp.l		MCF_SLT0_SCNT,d0
+		bcs			warte_d6
 		move.l		(sp)+,d0
 	}
 }
@@ -63,12 +62,11 @@ void warte_100us(void)
 	{
  warte_100us:
 		move.l		d0,-(sp) 		
-  		move.l		#13300,d0
-  		move.l		d0,MCF_SLT0_STCNT
+  		move.l		MCF_SLT0_SCNT,d0
+  		sub.l		#13200,d0
  warte_d6:
- 		move.b		MCF_SLT0_SSR,d0
-		btst.b		#0,d0
-		beq			warte_d6
+		cmp.l		MCF_SLT0_SCNT,d0
+		bcs			warte_d6
 		move.l		(sp)+,d0
 	}
 }
@@ -79,12 +77,11 @@ void warte_50us(void)
 	{
 warte_50us:
 		move.l		d0,-(sp) 		
-  		move.l		#6650,d0
-  		move.l		d0,MCF_SLT0_STCNT
+  		move.l		MCF_SLT0_SCNT,d0
+  		sub.l		#6600,d0
  warte_d6:
- 		move.b		MCF_SLT0_SSR,d0
-		btst.b		#0,d0
-		beq			warte_d6
+		cmp.l		MCF_SLT0_SCNT,d0
+		bcs			warte_d6
 		move.l		(sp)+,d0
 	}
 }
@@ -94,12 +91,11 @@ void warte_10us(void)
 	{
 warte_10us:
 		move.l		d0,-(sp) 		
-  		move.l		#1330,d0
-  		move.l		d0,MCF_SLT0_STCNT
+  		move.l		MCF_SLT0_SCNT,d0
+  		sub.l		#1320,d0
  warte_d6:
- 		move.b		MCF_SLT0_SSR,d0
-		btst.b		#0,d0
-		beq			warte_d6
+		cmp.l		MCF_SLT0_SCNT,d0
+		bcs			warte_d6
 		move.l		(sp)+,d0
 	}
 }
@@ -110,26 +106,22 @@ void warte_1us(void)
 	{
 warte_1us:
 		move.l		d0,-(sp) 		
-  		move.l		#133,d0
-  		move.l		d0,MCF_SLT0_STCNT
+  		move.l		MCF_SLT0_SCNT,d0
+  		sub.l		#132,d0
  warte_d6:
- 		move.b		MCF_SLT0_SSR,d0
-		btst.b		#0,d0
-		beq			warte_d6
+		cmp.l		MCF_SLT0_SCNT,d0
+		bcs			warte_d6
 		move.l		(sp)+,d0
 	}
 }
 
 /********************************************************************/
-#define ide_dma_tnr 7
-
 void BaS(void)
 {
-/*********************************************/
-// SD-Card abfragen
 		int		az_sectors;
 		int		sd_status,i;
-		int     dma_init_status,dma_run_status,dma_status;
+		int     status;
+		int		dma_task_nr = 0;
 
 
 		az_sectors = sd_card_init();
@@ -138,15 +130,51 @@ void BaS(void)
 		{
 			sd_card_idle();
 		}
-/*********************************************/
-// FireTOS laden?
+		
+/* variablenbereich setzen*/
+
+asm
+{
+		lea 0x1fc00000,a5
+		lea 0x1fd00000,a6
+}
+
+init_dma:
+	status =
+	MCD_initDma(
+		(dmaRegs*) (MBAR_BASE_ADRS + MMAP_DMA),
+		(void*) (MBAR_BASE_ADRS + MMAP_SRAM),
+		(MCD_RELOC_TASKS)
+		); 
+		
+	status = MCD_startDma(0,			/*int  channel,   /* the channel on which to run the DMA */
+    	(char*) (0xfff00000),		/*s8   *srcAddr,  /* the address to move data from, or physical buffer-descriptor address */
+    	0,					/*s16  srcIncr,   /* the amount to increment the source address per transfer */
+    	(char*) (0x12345678),			/*s8   *destAddr, /* the address to move data to */
+    	2,					/*s16  destIncr,  /* the amount to increment the destination address per transfer */
+    	512,				/*u32  dmaSize,   /* the number of bytes to transfer independent of the transfer size */
+    	2,					/*u32  xferSize,  /* the number bytes in of each data movement (1, 2, or 4) */
+    	3,					/*u32  initiator, /* what device initiates the DMA */
+    	4,								/*int  priority,  /* priority of the DMA */
+    	MCD_SINGLE_DMA+
+    	MCD_TT_FLAGS_CW+
+    	MCD_TT_FLAGS_RL+
+    	MCD_TT_FLAGS_SP,	/*u32  flags,     /* flags describing the DMA */
+    	MCD_NO_BYTE_SWAP+
+    	MCD_NO_BIT_REV					/*u32  funcDesc   /* a description of byte swapping, bit swapping, and CRC actions */
+	);
+
+	status =
+	MCD_dmaStatus(0);
+	
+	MCD_killDma(0);
+	
+				
 	asm
-	{
-		move.b	DIP_SWITCH,d0				
+{
+		move.b	DIP_SWITCH,d0				// dip schalter adresse
 		btst.b	#6,d0
 		beq		firetos_kopieren
-/**************************************/
-// PIC initieren und daten anfordern
 		lea		MCF_PSC0_PSCTB_8BIT,a6
 		lea		MCF_PSC3_PSCTB_8BIT,a3
 		lea		MCF_PSC3_PSCRB_8BIT,a4
@@ -160,10 +188,8 @@ void BaS(void)
 		move.b	d1,(a6)
 		move.b 	(a4),d2
 		move.b	d2,(a6)
-		move.b 	#0x01,(a3)						// RTC DATEN ANFORDERN
-		move.l 	#'OK!',(a6)
 		move.l	#0x0a0d,(a6)
-/**************************************/
+		move.b 	#0x01,(a3)						// RTC DATEN ANFORDERN
 // TOS kopieren
 		lea		0x00e00000,a0
 		lea		0xe0600000,a1					// default tos
@@ -177,13 +203,6 @@ firetos_kopieren:
 		lea		0xe0500000,a2					// 1MB
 cptos_loop:
 		move.l	(a1)+,(a0)+
-		move.l	(a1)+,(a0)+
-		move.l	(a1)+,(a0)+
-		move.l	(a1)+,(a0)+
-		move.l	(a1)+,(a0)+
-		move.l	(a1)+,(a0)+
-		move.l	(a1)+,(a0)+
-		move.l	(a1)+,(a0)+
 		cmp.l	a2,a1
 		blt		cptos_loop
 /***************************************************************/
@@ -193,7 +212,7 @@ div_inits:
 		move.b	DIP_SWITCH,d0				// dip schalter adresse
 		btst.b	#6,d0
 		beq		video_setup
-// rtc daten laden, mmu set, etc nur wenn switch 6 = off -> kein init wenn FireTOS
+// rtc daten, mmu set, etc nur wenn switch 6 = off
 		lea		0xffff8961,a0
 		clr.l	d1	
 		moveq	#64,d2
@@ -247,9 +266,33 @@ not_rtc:
 		nop
 		nop
 /********************************************************************/
+/* IDE reset
+/********************************************************************/
+		lea		0xffff8802,a0
+		move.b	#14,-2(a0)
+		move.b	#0x80,(a0)
+		bsr		warte_1ms
+		clr.b	(a0)
+/********************************************************************/
+/* video setup
+/********************************************************************/
 video_setup:
-// nichts
-/*******************************************************************/
+		lea		0xf0000410,a0
+// 25MHz
+ 		move.l	#0x032002ba,(a0)+			// horizontal 640x480
+		move.l	#0x020c020a,(a0)+			// vertikal 640x480
+		move.l	#0x0190015d,(a0)+			// horizontal 320x240
+		move.l	#0x020C020A,(a0)+			// vertikal 320x240 */
+/*
+//  32MHz
+		move.l	#0x037002ba,(a0)+			// horizontal 640x480
+		move.l	#0x020d020a,(a0)+			// vertikal 640x480
+		move.l	#0x02A001e0,(a0)+			// horizontal 320x240
+		move.l	#0x05a00160,(a0)+			// vertikal 320x240 
+*/
+		lea		-0x20(a0),a0
+		move.l	#0x01070002,(a0)			// fifo on, refresh on, ddrcs und cke on, video dac on,
+/********************************************************************/
 /* memory setup
 /********************************************************************/
  		lea		0x400,a0
@@ -274,7 +317,7 @@ mem_clr_loop:
 		move.l	#0x5555aaaa,d0				// memval3
 		move.l	d0,0x51a
 // ttram
-   		move.l	#__SDRAM_SIZE,d0			// ende ttram		
+   		move.l	#__Bas_base,d0				// ende ttram		
   		move.l	d0,0x5a4
   		move.l	#0x1357bd13,d0				// ramvalid
    		move.l	d0,0x5a8
@@ -294,69 +337,14 @@ mem_clr_loop:
 		move.b	d0,0xfffffa11
 		nop
 		
-	}
-/*
-//     init_dma:
-	dma_init_status =
-	MCD_initDma(
-		(dmaRegs*) (MBAR_BASE_ADRS + MMAP_DMA),
-		(void*) (MBAR_BASE_ADRS + MMAP_SRAM),
-		(MCD_RELOC_TASKS)
-		); 
-
-	for (i=0; i<64; i++)
-	{
-		
-		dma_run_status =	
-		MCD_startDma(ide_dma_tnr,			//int  channel,    the channel on which to run the DMA 
-    	(char*) (0x60004000),			//s8   *srcAddr,   the address to move data from, or physical buffer-descriptor address 
-    	4,								//s16  srcIncr,    the amount to increment the source address per transfer 
-    	(char*) (0x60000000),			//s8   *destAddr,  the address to move data to 
-    	4,								//s16  destIncr,   the amount to increment the destination address per transfer 
-    	4*389120,						//u32  dmaSize,    the number of bytes to transfer independent of the transfer size 
-    	4,								//u32  xferSize,   the number bytes in of each data movement (1, 2, or 4)
-    	0,								//u32  initiator,  what device initiates the DMA 
-    	5,								//int  priority,   priority of the DMA 
-    	MCD_SINGLE_DMA+
-    	MCD_TT_FLAGS_CW+				//u32  flags,      flags describing the DMA 
-    	MCD_TT_FLAGS_RL+
-    	MCD_TT_FLAGS_SP,
-    	MCD_NO_BYTE_SWAP+
-    	MCD_NO_BIT_REV					//u32  funcDesc    a description of byte swapping, bit swapping, and CRC actions 
-		);
-		while (MCD_dmaStatus(ide_dma_tnr)!=6);
-	}
-
-	dma_status =
-	MCD_dmaStatus(ide_dma_tnr);
-	
-	MCD_killDma(ide_dma_tnr);
-*/				
-	asm
-	{
 // test auf protect mode ---------------------
 		move.b	DIP_SWITCH,d0
 		btst	#7,d0 
 		beq		no_protect					// nein->
 		move.w	#0x0700,sr
 no_protect:
-	}
-		MCF_PSC0_PSCTB_8BIT = 0x0a0d;
-		MCF_PSC0_PSCTB_8BIT = 'BaS ';
-		MCF_PSC0_PSCTB_8BIT = 'comp';
-		MCF_PSC0_PSCTB_8BIT = 'lete';
-		MCF_PSC0_PSCTB_8BIT = 'd';
-		MCF_PSC0_PSCTB_8BIT = 0x0a0d;
-		MCF_PSC0_PSCTB_8BIT = '----';
-		MCF_PSC0_PSCTB_8BIT = '----';
-		MCF_PSC0_PSCTB_8BIT = '----';
-		MCF_PSC0_PSCTB_8BIT = '-';
-		MCF_PSC0_PSCTB_8BIT = 0x0a0d;
-		MCF_PSC0_PSCTB_8BIT = 0x0a0d;
-	asm
-	{
-		nop
-		bsr		warte_10ms
+		
 		jmp		0xe00030
-	}
+
+}
 }
